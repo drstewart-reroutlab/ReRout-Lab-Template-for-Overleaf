@@ -1,0 +1,45 @@
+<project name="Latex compilation" default="all" basedir=".">
+    <description>
+        This build file will compile an latex file into a paper using pdflatex.
+    </description>
+  <!-- set global properties for this build -->
+  <property name="dist" value="dist/"/>
+  <property name="paper" value="paper"/>
+
+
+  <target name="compile" depends="clean"
+        description="compile the source " >
+    <!-- Compile the latex source -->
+    <exec executable="pdflatex" output="/dev/null">
+        <arg value="${paper}"/>
+    </exec>
+    <exec executable="bibtex">
+        <arg value="${paper}"/>
+    </exec>
+    <exec executable="pdflatex" output="/dev/null">
+        <arg value="${paper}"/>
+    </exec>
+    <exec executable="pdflatex" output="/dev/null">
+        <arg value="${paper}"/>
+    </exec>
+    <exec executable="pdflatex">
+        <arg value="${paper}"/>
+    </exec>
+    <move file = "${paper}.pdf" toDir="${dist}"/>
+
+  </target>
+
+  <target name="all" depends="compile">
+  </target>
+
+
+  <target name="clean"
+        description="clean up" >
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete file="${dist}/${paper}.pdf"/>
+    <delete file="${paper}.aux"/>
+    <delete file="${paper}.bbl"/>
+    <delete file="${paper}.blg"/>
+    <delete file="${paper}.log"/>
+  </target>
+</project>
